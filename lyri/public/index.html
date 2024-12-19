@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lyri</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+  </head>
+
+  <body>
+    <div class="bottom-panel">
+      <div class="track-info">
+        <img id="album-art" class="album-art" src="" />
+        <div class="track-text">
+          <h1 id="title"></h1>
+          <h3 id="album"></h3>
+          <h3 id="artist"></h3>
+        </div>
+      </div>
+      <div class="media-controls-container">
+        <div class="media-controls-row">
+          <p id="position-label">00:00</p>
+          <progress
+            id="position"
+            class="position-bar"
+            value="0"
+            max="100"
+          ></progress>
+          <p id="length-label">00:00</p>
+        </div>
+        <div class="media-controls-row">
+          <div class="media-controls-group flex-start">
+            <a
+              id="track-url"
+              class="media-controls-btn media-controls-btn-icon"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i class="bi-box-arrow-up-right"></i>
+            </a>
+          </div>
+          <div class="media-controls-group">
+            <button
+              class="media-controls-btn media-controls-btn-icon"
+              onclick="previous()"
+            >
+              <i class="bi-skip-start-fill"></i>
+            </button>
+            <button class="media-controls-btn" onclick="togglePlayback()">
+              <i id="playback-icon" class="bi-play-fill"></i>
+            </button>
+            <button
+              class="media-controls-btn media-controls-btn-icon"
+              onclick="next()"
+            >
+              <i class="bi-skip-end-fill"></i>
+            </button>
+          </div>
+          <div class="media-controls-group flex-end">
+            <button
+              class="media-controls-btn media-controls-btn-icon"
+              onclick="toggleMute()"
+            >
+              <i id="mute-icon" class="bi-volume-up"></i>
+            </button>
+            <progress id="volume" value="0" max="1"></progress>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/player.js"></script>
+  </body>
+</html>
