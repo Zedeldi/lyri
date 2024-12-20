@@ -1,4 +1,8 @@
 from pathlib import Path
 
-public = Path(__file__).absolute().parent / "public"
-interval = 1
+from sanic.config import Config
+
+
+class LyriConfig(Config):
+    PUBLIC_PATH = Path(__file__).absolute().parent / "public"
+    INTERVAL = 1

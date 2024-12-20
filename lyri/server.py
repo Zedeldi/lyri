@@ -5,11 +5,11 @@ import uvloop
 from sanic import empty, json, text, Request, Sanic, Websocket
 from sanic.response import HTTPResponse, JSONResponse
 
-from lyri import config
+from lyri.config import LyriConfig
 from lyri.player import Player
 
-app = Sanic(__name__.replace(".", "-"))
-app.static("/", config.public, index="index.html")
+app = Sanic(__name__.replace(".", "-"), config=LyriConfig())
+app.static("/", app.config.PUBLIC_PATH, index="index.html")
 
 
 @app.before_server_start
@@ -24,7 +24,7 @@ async def player(request: Request, ws: Websocket) -> None:
     while True:
         data = json_dumps(app.ctx.player.get_info())
         await ws.send(data)
-        await asyncio.sleep(config.interval)
+        await asyncio.sleep(app.config.INTERVAL)
 
 
 # Information
