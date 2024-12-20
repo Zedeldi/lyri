@@ -1,5 +1,5 @@
 const serverUrl = "127.0.0.1:8000";
-let socket = new WebSocket(`ws://${serverUrl}/player`);
+const socket = new WebSocket(`ws://${serverUrl}/player`);
 let player = {};
 let lastVolume = 0;
 
@@ -7,6 +7,7 @@ const titleElement = document.getElementById("title");
 const albumElement = document.getElementById("album");
 const artistElement = document.getElementById("artist");
 const albumArt = document.getElementById("album-art");
+const bgImage = document.getElementById("bg-image");
 const trackUrl = document.getElementById("track-url");
 const playbackIcon = document.getElementById("playback-icon");
 const muteIcon = document.getElementById("mute-icon");
@@ -43,19 +44,9 @@ function getClickValue(event) {
   return x * unit;
 }
 
-function updateInfo() {
-  let title = player["title"];
-  let album = player["album"];
-  let artist = player["artist"];
-  let currentPosition = player["position"];
-  let length = player["length"];
-  let volumeLevel = player["volume"];
-  titleElement.textContent = title;
-  albumElement.textContent = album;
-  artistElement.textContent = artist;
-  albumArt.src = player["artwork"];
-  trackUrl.href = player["url"];
-  playbackIcon.className = player["playing"] ? "bi-pause-fill" : "bi-play-fill";
+function updateDuration() {
+  const currentPosition = player["position"];
+  const length = player["length"];
   position.value = currentPosition;
   position.max = length;
   positionLabel.textContent = formatDuration(currentPosition);
@@ -64,6 +55,15 @@ function updateInfo() {
   } else {
     lengthLabel.textContent = formatDuration(length);
   }
+}
+
+function updateArtwork() {
+  albumArt.src = player["artwork"];
+  bgImage.style.backgroundImage = `url(${player["artwork"]})`;
+}
+
+function updateVolume() {
+  const volumeLevel = player["volume"];
   volume.value = volumeLevel;
   if (volumeLevel > 0) {
     lastVolume = volumeLevel;
@@ -71,8 +71,26 @@ function updateInfo() {
   } else {
     muteIcon.className = "bi-volume-mute";
   }
+}
+
+function updateTrackInfo() {
+  const title = player["title"];
+  const album = player["album"];
+  const artist = player["artist"];
+  titleElement.textContent = title;
+  albumElement.textContent = album;
+  artistElement.textContent = artist;
+  trackUrl.href = player["url"];
+  playbackIcon.className = player["playing"] ? "bi-pause-fill" : "bi-play-fill";
   document.title = `${title} | ${artist}`;
   console.log(`[now playing] ${title} - ${album} by ${artist}`);
+}
+
+function updateInfo() {
+  updateTrackInfo();
+  updateArtwork();
+  updateDuration();
+  updateVolume();
 }
 
 async function togglePlayback() {
@@ -105,6 +123,7 @@ async function setVolume(level) {
 
 lengthLabel.addEventListener("click", (event) => {
   lengthLabel.toggleAttribute("data-remaining");
+  updateDuration();
 });
 
 position.addEventListener("click", async (event) => {
@@ -122,7 +141,7 @@ socket.addEventListener("open", (event) => {
 });
 
 socket.addEventListener("message", (event) => {
-  let data = JSON.parse(event.data);
+  const data = JSON.parse(event.data);
   console.debug(`[message] Data received from server: ${data}`);
   if (JSON.stringify(data) != JSON.stringify(player)) {
     player = data;
