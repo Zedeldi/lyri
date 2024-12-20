@@ -9,8 +9,11 @@
 
   <body>
     <div id="bg-image" class="bg-image"></div>
+    <div id="lyrics-panel" class="lyrics-panel hidden">
+      <p id="lyrics"></p>
+    </div>
     <div class="bottom-panel">
-      <div class="track-info">
+      <div id="track-info" class="track-info">
         <img id="album-art" class="album-art" src="" />
         <div class="track-text">
           <h1 id="title"></h1>
@@ -19,73 +22,81 @@
         </div>
       </div>
       <div class="media-controls-container">
-        <div class="media-controls-row">
-          <p id="position-label">00:00</p>
-          <progress
-            id="position"
-            class="position-bar"
-            value="0"
-            max="100"
-          ></progress>
-          <p id="length-label">00:00</p>
-        </div>
-        <div class="media-controls-row">
-          <div class="media-controls-group flex-start">
-            <a
-              id="track-url"
-              class="media-controls-btn media-controls-btn-icon"
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i class="bi-box-arrow-up-right"></i>
-            </a>
+        <div id="media-controls" class="media-controls">
+          <div class="media-controls-row">
+            <p id="position-label">00:00</p>
+            <progress
+              id="position"
+              class="position-bar"
+              value="0"
+              max="100"
+            ></progress>
+            <p id="length-label">00:00</p>
           </div>
-          <div class="media-controls-group">
-            <button
-              id="shuffle"
-              class="media-controls-btn media-controls-btn-icon"
-              onclick="toggleShuffle()"
-            >
-              <i class="bi-shuffle"></i>
-            </button>
-            <button
-              class="media-controls-btn media-controls-btn-icon"
-              onclick="previous()"
-            >
-              <i class="bi-skip-start-fill"></i>
-            </button>
-            <button class="media-controls-btn" onclick="togglePlayback()">
-              <i id="playback-icon" class="bi-play-fill"></i>
-            </button>
-            <button
-              class="media-controls-btn media-controls-btn-icon"
-              onclick="next()"
-            >
-              <i class="bi-skip-end-fill"></i>
-            </button>
-            <button
-              id="loop-status"
-              class="media-controls-btn media-controls-btn-icon"
-              onclick="toggleLoopStatus()"
-            >
-              <i id="loop-status-icon" class="bi-repeat"></i>
-            </button>
-          </div>
-          <div class="media-controls-group flex-end">
-            <button
-              class="media-controls-btn media-controls-btn-icon"
-              onclick="toggleMute()"
-            >
-              <i id="mute-icon" class="bi-volume-up"></i>
-            </button>
-            <progress id="volume" value="0" max="1"></progress>
-            <button
-              class="media-controls-btn media-controls-btn-icon"
-              onclick="toggleFullscreen()"
-            >
-              <i id="fullscreen-icon" class="bi-fullscreen"></i>
-            </button>
+          <div class="media-controls-row">
+            <div class="media-controls-group flex-start">
+              <a
+                id="track-url"
+                class="media-controls-btn media-controls-btn-icon"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="bi-box-arrow-up-right"></i>
+              </a>
+            </div>
+            <div class="media-controls-group">
+              <button
+                id="shuffle"
+                class="media-controls-btn media-controls-btn-icon"
+                onclick="toggleShuffle()"
+              >
+                <i class="bi-shuffle"></i>
+              </button>
+              <button
+                class="media-controls-btn media-controls-btn-icon"
+                onclick="previous()"
+              >
+                <i class="bi-skip-start-fill"></i>
+              </button>
+              <button class="media-controls-btn" onclick="togglePlayback()">
+                <i id="playback-icon" class="bi-play-fill"></i>
+              </button>
+              <button
+                class="media-controls-btn media-controls-btn-icon"
+                onclick="next()"
+              >
+                <i class="bi-skip-end-fill"></i>
+              </button>
+              <button
+                id="loop-status"
+                class="media-controls-btn media-controls-btn-icon"
+                onclick="toggleLoopStatus()"
+              >
+                <i id="loop-status-icon" class="bi-repeat"></i>
+              </button>
+            </div>
+            <div class="media-controls-group flex-end">
+              <button
+                class="media-controls-btn media-controls-btn-icon"
+                onclick="toggleLyrics()"
+              >
+                <i class="bi-music-note-list"></i>
+              </button>
+              <button
+                class="media-controls-btn media-controls-btn-icon"
+                onclick="toggleMute()"
+              >
+                <i id="mute-icon" class="bi-volume-up"></i>
+              </button>
+              <progress id="volume" value="0" max="1"></progress>
+              <button
+                class="media-controls-btn media-controls-btn-icon"
+                onclick="toggleFullscreen()"
+              >
+                <i id="fullscreen-icon" class="bi-fullscreen"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>

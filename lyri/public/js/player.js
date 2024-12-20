@@ -1,8 +1,13 @@
 const serverUrl = "127.0.0.1:8000";
 const socket = new WebSocket(`ws://${serverUrl}/player`);
 let player = {};
+let lyrics = [];
 let lastVolume = 0;
 
+const trackInfo = document.getElementById("track-info");
+const mediaControls = document.getElementById("media-controls");
+const lyricsPanel = document.getElementById("lyrics-panel");
+const lyricsText = document.getElementById("lyrics");
 const titleElement = document.getElementById("title");
 const albumElement = document.getElementById("album");
 const artistElement = document.getElementById("artist");
@@ -50,6 +55,14 @@ function formatDuration(us) {
   return `${m}:${s}`;
 }
 
+function usFromDuration(duration) {
+  let [m, s, ms] = duration
+    .replace(".", ":")
+    .split(":")
+    .map((line) => Number.parseInt(line));
+  return ((m * 60 + s) * 100 + ms) * 10000;
+}
+
 function formatRemaining(position, length) {
   return `-${formatDuration(length - position)}`;
 }
@@ -59,6 +72,34 @@ function getClickValue(event) {
   const x = event.clientX - rect.left;
   const unit = event.target.max / rect.width;
   return x * unit;
+}
+
+function getTrackInfo(data) {
+  return {
+    title: data["title"],
+    album: data["album"],
+    artist: data["artist"],
+    url: data["url"],
+    artwork: data["artwork"],
+  };
+}
+
+async function getLyrics() {
+  const data =
+    (await fetch(`http://${serverUrl}/get/lyrics`).then((response) =>
+      response.json(),
+    )) || "No lyrics available for this song.";
+  return data.charAt(0) == "["
+    ? data.split("\n").map((line) => [
+        usFromDuration(
+          line
+            .slice(0, 11)
+            .trim()
+            .replace(/[\[\]']+/g, ""),
+        ),
+        line.slice(11).trim(),
+      ])
+    : data.split("\n").map((line) => line.trim());
 }
 
 function updateDuration() {
@@ -114,7 +155,20 @@ function updatePlaybackState() {
   }
 }
 
-function updateTrackInfo() {
+function updateLyrics() {
+  const data =
+    lyrics[0].length == 2
+      ? lyrics
+          .filter(
+            (line, idx, arr) =>
+              idx + 1 == arr.length || arr[idx + 1][0] >= player["position"],
+          )
+          .map((line) => line[1])
+      : lyrics;
+  lyricsText.textContent = data.slice(0, 4).join("\r\n");
+}
+
+async function updateTrackInfo() {
   const title = player["title"];
   const album = player["album"];
   const artist = player["artist"];
@@ -122,16 +176,17 @@ function updateTrackInfo() {
   albumElement.textContent = album;
   artistElement.textContent = artist;
   trackUrl.href = player["url"];
+  updateArtwork();
   document.title = `${title} | ${artist}`;
   console.log(`[now playing] ${title} - ${album} by ${artist}`);
+  lyrics = await getLyrics();
 }
 
 function updateInfo() {
-  updateTrackInfo();
-  updateArtwork();
   updateDuration();
   updateVolume();
   updatePlaybackState();
+  updateLyrics();
 }
 
 async function togglePlayback() {
@@ -157,6 +212,12 @@ async function toggleShuffle() {
   shuffle.toggleAttribute("data-enabled");
   const status = shuffle.hasAttribute("data-enabled");
   await fetch(`http://${serverUrl}/set/shuffle?status=${status}`);
+}
+
+function toggleLyrics() {
+  trackInfo.classList.toggle("hidden");
+  mediaControls.classList.toggle("hidden");
+  lyricsPanel.classList.toggle("hidden");
 }
 
 async function toggleMute() {
@@ -194,13 +255,16 @@ socket.addEventListener("open", (event) => {
   console.info("[open] Connection established");
 });
 
-socket.addEventListener("message", (event) => {
+socket.addEventListener("message", async (event) => {
   const data = JSON.parse(event.data);
   console.debug(`[message] Data received from server: ${data}`);
-  if (JSON.stringify(data) != JSON.stringify(player)) {
-    player = data;
-    updateInfo();
+  const trackIsChanged =
+    JSON.stringify(getTrackInfo(data)) != JSON.stringify(getTrackInfo(player));
+  player = data;
+  if (trackIsChanged) {
+    await updateTrackInfo();
   }
+  updateInfo();
 });
 
 socket.addEventListener("close", (event) => {

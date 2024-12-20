@@ -26,8 +26,24 @@ body {
   background-size: cover;
 }
 
+.lyrics-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 60%;
+  transform: translate(-50%, -50%);
+}
+
+.lyrics-panel p {
+  white-space: pre-wrap;
+  font-size: 4em;
+  font-weight: bold;
+  line-height: 1.5em;
+  vertical-align: middle;
+}
+
 .bottom-panel {
-  position: absolute;
+  position: fixed;
   left: 5%;
   bottom: 10%;
   width: 90%;
@@ -60,7 +76,19 @@ body {
   margin-top: auto;
 }
 
-.media-controls-container {
+.media-controls {
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.media-controls-container:hover .media-controls.hidden {
+  background-color: rgba(0, 0, 0, 0.5);
+  visibility: visible;
+  opacity: 1;
+  transition: all 0.25s ease-in;
+}
+
+.media-controls {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -118,10 +146,17 @@ body {
   color: var(--color-primary);
 }
 
+/* Utilities */
 .flex-start {
   justify-content: start;
 }
 
 .flex-end {
   justify-content: end;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.25s ease-out;
 }
