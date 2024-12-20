@@ -20,10 +20,11 @@ class Player(Playerctl.Player):
     def get_info(self) -> dict[str, Any]:
         """Return dictionary of all player information."""
         return {
-            "status": self.props.status,
+            "status": self.get_status(),
             "playing": self.is_playing,
-            "shuffle": self.props.shuffle,
-            "volume": self.props.volume,
+            "loop-status": self.get_loop_status(),
+            "shuffle": self.get_shuffle(),
+            "volume": self.get_volume(),
             "title": self.get_title(),
             "album": self.get_album(),
             "artwork": self.get_artwork(),
@@ -38,6 +39,22 @@ class Player(Playerctl.Player):
     def is_playing(self) -> bool:
         """Return whether player is currently playing."""
         return self.props.playback_status == Playerctl.PlaybackStatus.PLAYING
+
+    def get_status(self) -> str:
+        """Return playback status of player."""
+        return self.props.status
+
+    def get_loop_status(self) -> Playerctl.LoopStatus:
+        """Return current loop status of player."""
+        return self.props.loop_status
+
+    def get_shuffle(self) -> bool:
+        """Return whether shuffle is currently enabled."""
+        return self.props.shuffle
+
+    def get_volume(self) -> float:
+        """Get current volume level."""
+        return self.props.volume
 
     def get_artwork(self) -> str | None:
         """Return album art URL or None."""

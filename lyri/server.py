@@ -1,5 +1,5 @@
 import asyncio
-from json import dumps as json_dumps
+from json import dumps as json_dumps, loads as json_loads
 
 import uvloop
 from sanic import empty, json, text, Request, Sanic, Websocket
@@ -14,7 +14,7 @@ app.static("/", app.config.PUBLIC_PATH, index="index.html")
 
 @app.before_server_start
 async def setup_ctx(app: Sanic, loop: uvloop.Loop):
-    app.ctx.player = Player()
+    app.ctx.player = Player(app.config.PLAYER_NAME)
     app.ctx.player.start()
 
 
@@ -31,19 +31,19 @@ async def player(request: Request, ws: Websocket) -> None:
 @app.route("/get/status", methods=["GET"])
 async def get_status(request: Request) -> JSONResponse:
     """Return status for player."""
-    return json(app.ctx.player.props.status)
+    return json(app.ctx.player.get_status())
 
 
 @app.route("/get/shuffle", methods=["GET"])
 async def get_shuffle(request: Request) -> JSONResponse:
     """Return shuffle status for player."""
-    return json(app.ctx.player.props.shuffle)
+    return json(app.ctx.player.get_shuffle())
 
 
 @app.route("/get/volume", methods=["GET"])
 async def get_volume(request: Request) -> JSONResponse:
     """Return volume for player."""
-    return json(app.ctx.player.props.volume)
+    return json(app.ctx.player.get_volume())
 
 
 @app.route("/get/title", methods=["GET"])
@@ -143,6 +143,28 @@ async def set_position(request: Request) -> HTTPResponse:
         app.ctx.player.set_position(position)
     else:
         return text("Position not provided.")
+    return empty()
+
+
+@app.route("/set/loop-status", methods=["GET"])
+async def set_loop_status(request: Request) -> HTTPResponse:
+    """Set loop status of the player."""
+    if status := request.args.get("status"):
+        status = int(status)
+        app.ctx.player.set_loop_status(status)
+    else:
+        return text("Loop status not provided.")
+    return empty()
+
+
+@app.route("/set/shuffle", methods=["GET"])
+async def set_shuffle(request: Request) -> HTTPResponse:
+    """Set shuffle status of the player."""
+    if status := request.args.get("status"):
+        status = json_loads(status)
+        app.ctx.player.set_shuffle(status)
+    else:
+        return text("Shuffle status not provided.")
     return empty()
 
 

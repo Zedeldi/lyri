@@ -43,6 +43,13 @@
           </div>
           <div class="media-controls-group">
             <button
+              id="shuffle"
+              class="media-controls-btn media-controls-btn-icon"
+              onclick="toggleShuffle()"
+            >
+              <i class="bi-shuffle"></i>
+            </button>
+            <button
               class="media-controls-btn media-controls-btn-icon"
               onclick="previous()"
             >
@@ -56,6 +63,13 @@
               onclick="next()"
             >
               <i class="bi-skip-end-fill"></i>
+            </button>
+            <button
+              id="loop-status"
+              class="media-controls-btn media-controls-btn-icon"
+              onclick="toggleLoopStatus()"
+            >
+              <i id="loop-status-icon" class="bi-repeat"></i>
             </button>
           </div>
           <div class="media-controls-group flex-end">

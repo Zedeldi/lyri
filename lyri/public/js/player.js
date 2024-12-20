@@ -11,6 +11,10 @@ const bgImage = document.getElementById("bg-image");
 const trackUrl = document.getElementById("track-url");
 const playbackIcon = document.getElementById("playback-icon");
 const muteIcon = document.getElementById("mute-icon");
+const loopStatus = document.getElementById("loop-status");
+loopStatus.setAttribute("data-value", 0);
+const loopStatusIcon = document.getElementById("loop-status-icon");
+const shuffle = document.getElementById("shuffle");
 const fullscreenIcon = document.getElementById("fullscreen-icon");
 const positionLabel = document.getElementById("position-label");
 const position = document.getElementById("position");
@@ -86,6 +90,30 @@ function updateVolume() {
   }
 }
 
+function updateLoopStatusEnabled() {
+  if (loopStatus.getAttribute("data-value") == 1) {
+    loopStatusIcon.className = "bi-repeat-1";
+  } else {
+    loopStatusIcon.className = "bi-repeat";
+  }
+  if (loopStatus.getAttribute("data-value") > 0) {
+    loopStatus.setAttribute("data-enabled", "");
+  } else {
+    loopStatus.removeAttribute("data-enabled");
+  }
+}
+
+function updatePlaybackState() {
+  playbackIcon.className = player["playing"] ? "bi-pause-fill" : "bi-play-fill";
+  loopStatus.setAttribute("data-value", player["loop-status"]);
+  updateLoopStatusEnabled();
+  if (player["shuffle"]) {
+    shuffle.setAttribute("data-enabled", "");
+  } else {
+    shuffle.removeAttribute("data-enabled");
+  }
+}
+
 function updateTrackInfo() {
   const title = player["title"];
   const album = player["album"];
@@ -94,7 +122,6 @@ function updateTrackInfo() {
   albumElement.textContent = album;
   artistElement.textContent = artist;
   trackUrl.href = player["url"];
-  playbackIcon.className = player["playing"] ? "bi-pause-fill" : "bi-play-fill";
   document.title = `${title} | ${artist}`;
   console.log(`[now playing] ${title} - ${album} by ${artist}`);
 }
@@ -104,6 +131,7 @@ function updateInfo() {
   updateArtwork();
   updateDuration();
   updateVolume();
+  updatePlaybackState();
 }
 
 async function togglePlayback() {
@@ -116,6 +144,19 @@ async function previous() {
 
 async function next() {
   await fetch(`http://${serverUrl}/next`);
+}
+
+async function toggleLoopStatus() {
+  const status = (loopStatus.getAttribute("data-value") + 1) % 3;
+  loopStatus.setAttribute("data-value", status);
+  updateLoopStatusEnabled();
+  await fetch(`http://${serverUrl}/set/loop-status?status=${status}`);
+}
+
+async function toggleShuffle() {
+  shuffle.toggleAttribute("data-enabled");
+  const status = shuffle.hasAttribute("data-enabled");
+  await fetch(`http://${serverUrl}/set/shuffle?status=${status}`);
 }
 
 async function toggleMute() {
