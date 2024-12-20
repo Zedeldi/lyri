@@ -11,11 +11,24 @@ const bgImage = document.getElementById("bg-image");
 const trackUrl = document.getElementById("track-url");
 const playbackIcon = document.getElementById("playback-icon");
 const muteIcon = document.getElementById("mute-icon");
+const fullscreenIcon = document.getElementById("fullscreen-icon");
 const positionLabel = document.getElementById("position-label");
 const position = document.getElementById("position");
 const lengthLabel = document.getElementById("length-label");
 const volume = document.getElementById("volume");
 
+// https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+    fullscreenIcon.className = "bi-fullscreen-exit";
+  } else if (document.exitFullscreen) {
+    document.exitFullscreen();
+    fullscreenIcon.className = "bi-fullscreen";
+  }
+}
+
+// https://stackoverflow.com/a/3733257
 function formatDuration(us) {
   let duration = us / 1000 ** 2;
   const hours = Math.floor(duration / 60 ** 2);

@@ -86,6 +86,8 @@ body {
 }
 
 .media-controls-btn {
+  display: flex;
+  flex-direction: column;
   height: 80px;
   width: 80px;
   line-height: 50%;
@@ -96,6 +98,7 @@ body {
   outline: none;
   background-color: #fff;
   color: #000;
+  justify-content: center;
   text-align: center;
   cursor: pointer;
 }
