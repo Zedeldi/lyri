@@ -1,5 +1,4 @@
 const serverUrl = window.location.host;
-const socket = new WebSocket(`ws://${serverUrl}/player`);
 let player = {};
 let lyrics = [];
 let lastVolume = 0;
@@ -251,34 +250,44 @@ volume.addEventListener("click", async (event) => {
   await setVolume(value);
 });
 
-socket.addEventListener("open", (event) => {
-  console.info("[open] Connection established");
-});
+function startWebsocket() {
+  const socket = new WebSocket(`ws://${serverUrl}/player`);
 
-socket.addEventListener("message", async (event) => {
-  const data = JSON.parse(event.data);
-  console.debug(`[message] Data received from server: ${data}`);
-  const trackIsChanged =
-    JSON.stringify(getTrackInfo(data)) != JSON.stringify(getTrackInfo(player));
-  player = data;
-  if (trackIsChanged) {
-    await updateTrackInfo();
-  }
-  updateInfo();
-});
+  socket.addEventListener("open", (event) => {
+    console.info("[open] Connection established");
+  });
 
-socket.addEventListener("close", (event) => {
-  if (event.wasClean) {
-    console.info(
-      `[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`,
-    );
-  } else {
-    // e.g. server process killed or network down
-    // event.code is usually 1006 in this case
-    console.error("[close] Connection died");
-  }
-});
+  socket.addEventListener("message", async (event) => {
+    const data = JSON.parse(event.data);
+    console.debug(`[message] Data received from server: ${data}`);
+    const trackIsChanged =
+      JSON.stringify(getTrackInfo(data)) !=
+      JSON.stringify(getTrackInfo(player));
+    player = data;
+    if (trackIsChanged) {
+      await updateTrackInfo();
+    }
+    updateInfo();
+  });
 
-socket.addEventListener("error", (error) => {
-  console.error(`[error]`);
-});
+  socket.addEventListener("close", (event) => {
+    if (event.wasClean) {
+      console.info(
+        `[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`,
+      );
+    } else {
+      // e.g. server process killed or network down
+      // event.code is usually 1006 in this case
+      console.error("[close] Connection died");
+    }
+    console.error("[reconnect] Reconnecting in one second");
+    setTimeout(startWebsocket, 1000);
+  });
+
+  socket.addEventListener("error", (error) => {
+    console.error(`[error]`);
+    socket.close();
+  });
+}
+
+startWebsocket();
