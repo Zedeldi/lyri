@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lyri"
+description = "HTTP music dashboard to control playback via playerctl and display lyrics."
+version = "1.0.0"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+  {name = "Zack Didcott"}
+]
+maintainers = [
+  {name = "Zack Didcott"}
+]
+dependencies = [
+  "PyGObject",
+  "sanic",
+  "syncedlyrics"
+]
+requires-python = ">= 3.10"
+
+[project.urls]
+Homepage = "https://github.com/Zedeldi/lyri"
+
+[project.scripts]
+lyri = "lyri.__main__:main"
+
+[tool.isort]
+profile = "black"
+
+[tool.setuptools.packages.find]
+include = ["lyri*"]

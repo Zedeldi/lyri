@@ -1,0 +1,2 @@
+graft lyri/public
+global-exclude *.pyc
