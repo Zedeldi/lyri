@@ -1,8 +1,11 @@
+"""Module providing Sanic web server application."""
+
 import asyncio
-from json import dumps as json_dumps, loads as json_loads
+from json import dumps as json_dumps
+from json import loads as json_loads
 
 import uvloop
-from sanic import empty, json, text, Request, Sanic, Websocket
+from sanic import Request, Sanic, Websocket, empty, json, text
 from sanic.response import HTTPResponse, JSONResponse
 
 from lyri.config import LyriConfig
@@ -14,6 +17,7 @@ app.static("/", app.config.PUBLIC_PATH, index="index.html")
 
 @app.before_server_start
 async def setup_ctx(app: Sanic, loop: uvloop.Loop):
+    """Set up app context with player instance."""
     app.ctx.player = Player(app.config.PLAYER_NAME)
     app.ctx.player.start()
 

@@ -1,3 +1,5 @@
+"""Module to provide handlers for playerctl."""
+
 from threading import Thread
 from typing import Any
 
@@ -5,7 +7,7 @@ import gi
 
 gi.require_version("Playerctl", "2.0")
 
-from gi.repository import Playerctl, GLib
+from gi.repository import GLib, Playerctl
 
 from lyri.lyrics import get_lyrics
 

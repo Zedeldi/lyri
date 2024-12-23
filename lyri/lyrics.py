@@ -1,3 +1,5 @@
+"""Module to provide methods for obtaining lyrics."""
+
 import syncedlyrics
 
 
