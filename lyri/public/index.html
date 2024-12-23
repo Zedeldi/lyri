@@ -27,7 +27,7 @@
           <div class="media-controls-row">
             <p id="position-label">00:00</p>
             <progress
-              id="position"
+              id="position-bar"
               class="position-bar"
               value="0"
               max="100"
@@ -48,52 +48,50 @@
             </div>
             <div class="media-controls-group">
               <button
-                id="shuffle"
+                id="shuffle-btn"
                 class="media-controls-btn media-controls-btn-icon max-width"
-                onclick="toggleShuffle()"
               >
                 <i class="bi-shuffle"></i>
               </button>
               <button
+                id="previous-btn"
                 class="media-controls-btn media-controls-btn-icon"
-                onclick="previous()"
               >
                 <i class="bi-skip-start-fill"></i>
               </button>
-              <button class="media-controls-btn" onclick="togglePlayback()">
+              <button id="playback-btn" class="media-controls-btn">
                 <i id="playback-icon" class="bi-play-fill"></i>
               </button>
               <button
+                id="next-btn"
                 class="media-controls-btn media-controls-btn-icon"
-                onclick="next()"
               >
                 <i class="bi-skip-end-fill"></i>
               </button>
               <button
-                id="loop-status"
+                id="loop-status-btn"
                 class="media-controls-btn media-controls-btn-icon max-width"
-                onclick="toggleLoopStatus()"
               >
                 <i id="loop-status-icon" class="bi-repeat"></i>
               </button>
             </div>
             <div class="media-controls-group flex-end">
               <button
+                id="lyrics-btn"
                 class="media-controls-btn media-controls-btn-icon"
-                onclick="toggleLyrics()"
               >
                 <i class="bi-music-note-list"></i>
               </button>
               <button
+                id="mute-btn"
                 class="media-controls-btn media-controls-btn-icon"
-                onclick="toggleMute()"
               >
                 <i id="mute-icon" class="bi-volume-up"></i>
               </button>
-              <progress id="volume" value="0" max="1"></progress>
+              <progress id="volume-bar" value="0" max="1"></progress>
               <button
+                id="fullscreen-btn"
                 class="media-controls-btn media-controls-btn-icon max-width"
-                onclick="toggleFullscreen()"
               >
                 <i id="fullscreen-icon" class="bi-fullscreen"></i>
               </button>
