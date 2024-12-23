@@ -229,6 +229,7 @@ const PlayerUI = (function () {
   }
 
   function updateLyrics() {
+    const lines = window.innerHeight < 768 ? 2 : 4
     const data =
       lyrics[0].length == 2
         ? lyrics
@@ -239,7 +240,7 @@ const PlayerUI = (function () {
             .map((line) => line[1])
         : lyrics;
     document.getElementById("lyrics").textContent = data
-      .slice(0, 4)
+      .slice(0, lines)
       .join("\r\n");
   }
 
