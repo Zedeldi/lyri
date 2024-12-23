@@ -59,6 +59,13 @@ body {
   margin-top: auto;
 }
 
+/* iOS and Safari < 14.1 */
+@supports (-webkit-touch-callout: none) and (not (translate: none)) {
+  .track-text {
+    margin-left: 32px;
+  }
+}
+
 .track-text h1 {
   margin: 10px 0;
   font-size: 64px;
@@ -128,9 +135,11 @@ body {
   border-radius: 50%;
   border: none;
   outline: none;
+  padding: 0;
   background-color: #fff;
   color: #000;
   justify-content: center;
+  align-items: center;
   text-align: center;
   cursor: pointer;
 }
@@ -138,6 +147,7 @@ body {
   height: 60px;
   width: 60px;
   font-size: 2em;
+  border-radius: 0;
   background-color: transparent;
   color: #fff;
 }
@@ -159,4 +169,10 @@ body {
   visibility: hidden;
   opacity: 0;
   transition: all 0.25s ease-out;
+}
+
+@media only screen and (max-width: 1024px) {
+  .max-width {
+    display: none;
+  }
 }

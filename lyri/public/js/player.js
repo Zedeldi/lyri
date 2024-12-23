@@ -1,4 +1,4 @@
-const serverUrl = "127.0.0.1:8000";
+const serverUrl = window.location.host;
 const socket = new WebSocket(`ws://${serverUrl}/player`);
 let player = {};
 let lyrics = [];

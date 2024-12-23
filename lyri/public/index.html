@@ -1,5 +1,6 @@
 <!doctype html>
-<html>
+<!-- https://dev.webonomic.nl/fixing-the-iphone-css-hover-problem-on-ios -->
+<html ontouchmove>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -48,7 +49,7 @@
             <div class="media-controls-group">
               <button
                 id="shuffle"
-                class="media-controls-btn media-controls-btn-icon"
+                class="media-controls-btn media-controls-btn-icon max-width"
                 onclick="toggleShuffle()"
               >
                 <i class="bi-shuffle"></i>
@@ -70,7 +71,7 @@
               </button>
               <button
                 id="loop-status"
-                class="media-controls-btn media-controls-btn-icon"
+                class="media-controls-btn media-controls-btn-icon max-width"
                 onclick="toggleLoopStatus()"
               >
                 <i id="loop-status-icon" class="bi-repeat"></i>
@@ -91,7 +92,7 @@
               </button>
               <progress id="volume" value="0" max="1"></progress>
               <button
-                class="media-controls-btn media-controls-btn-icon"
+                class="media-controls-btn media-controls-btn-icon max-width"
                 onclick="toggleFullscreen()"
               >
                 <i id="fullscreen-icon" class="bi-fullscreen"></i>
