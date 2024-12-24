@@ -66,6 +66,15 @@ body {
   }
 }
 
+.track-text h1,
+.track-text h3 {
+  display: -webkit-box;
+  overflow: hidden;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
 .track-text h1 {
   margin: 10px 0;
   font-size: 64px;
