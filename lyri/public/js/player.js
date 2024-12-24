@@ -160,8 +160,7 @@ const PlayerUI = (function () {
   function updateArtwork(url) {
     url = url || player.artwork;
     document.getElementById("album-art").src = url;
-    document.getElementById("bg-image").style.backgroundImage =
-      `url(${url})`;
+    document.getElementById("bg-image").style.backgroundImage = `url(${url})`;
   }
 
   function updateDuration(position, length) {
@@ -174,10 +173,7 @@ const PlayerUI = (function () {
     positionBar.max = length;
     positionLabel.textContent = Utils.formatDuration(position);
     if (lengthLabel.hasAttribute("data-remaining")) {
-      lengthLabel.textContent = Utils.formatRemaining(
-        position,
-        length,
-      );
+      lengthLabel.textContent = Utils.formatRemaining(position, length);
     } else {
       lengthLabel.textContent = Utils.formatDuration(length);
     }
@@ -200,7 +196,7 @@ const PlayerUI = (function () {
 
   function updatePlaybackState(playing, shuffle) {
     playing = playing || player.playing;
-    shuffle = shuffle || player.shuffle
+    shuffle = shuffle || player.shuffle;
     const loopStatus = document.getElementById("loop-status-btn");
     const shuffleBtn = document.getElementById("shuffle-btn");
     document.getElementById("playback-icon").className = playing
@@ -229,7 +225,7 @@ const PlayerUI = (function () {
   }
 
   function updateLyrics() {
-    const lines = window.innerHeight < 768 ? 2 : 4
+    const lines = window.innerHeight < 768 ? 2 : 4;
     const data =
       lyrics[0].length == 2
         ? lyrics
@@ -245,7 +241,7 @@ const PlayerUI = (function () {
   }
 
   async function updateTrackInfo(data) {
-    data = data || player
+    data = data || player;
     document.getElementById("title").textContent = data.title;
     document.getElementById("album").textContent = data.album;
     document.getElementById("artist").textContent = data.artist;
@@ -259,7 +255,7 @@ const PlayerUI = (function () {
   }
 
   function updateInfo(data) {
-    data = data || player
+    data = data || player;
     updateDuration(data.position, data.length);
     updateVolume(data.volume);
     updatePlaybackState(data.playing, data.shuffle);
@@ -267,7 +263,7 @@ const PlayerUI = (function () {
   }
 
   function getTrackInfo(data) {
-    data = data || player
+    data = data || player;
     return {
       title: data.title,
       album: data.album,
