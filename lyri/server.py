@@ -22,6 +22,12 @@ async def setup_ctx(app: Sanic, loop: uvloop.Loop):
     app.ctx.player.start()
 
 
+@app.before_server_stop
+async def stop_server(app: Sanic, loop: uvloop.Loop):
+    """Stop player GLib main loop before stopping server."""
+    app.ctx.player.stop()
+
+
 @app.websocket("/player")
 async def player(request: Request, ws: Websocket) -> None:
     """Handle websocket player requests."""

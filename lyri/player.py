@@ -18,6 +18,33 @@ class Player(Playerctl.Player):
     def __init__(self, player_name: str | None = None) -> None:
         """Initialise player instance."""
         super().__init__(player_name=player_name)
+        self._loop = None
+
+    def start(self) -> None:
+        """Start the main loop for GLib in a new thread."""
+        self._loop = GLib.MainLoop()
+        self._thread = Thread(target=self._loop.run)
+        self._thread.start()
+
+    def stop(self) -> None:
+        """Stop the main loop for GLib and join thread."""
+        self._loop.quit()
+        self._thread.join()
+
+    @property
+    def is_running(self) -> bool:
+        """Return whether main loop for GLib is running."""
+        return self._loop.is_running()
+
+    @staticmethod
+    def list_players() -> list[Playerctl.PlayerName]:
+        """Return list of player names."""
+        return Playerctl.list_players()
+
+    @property
+    def name(self) -> str:
+        """Return player name."""
+        return self.props.player_name
 
     def get_info(self) -> dict[str, Any]:
         """Return dictionary of all player information."""
@@ -77,9 +104,3 @@ class Player(Playerctl.Player):
     def get_lyrics(self) -> str:
         """Return lyrics for currently playing song."""
         return get_lyrics(self.get_title(), self.get_artist())
-
-    @staticmethod
-    def start() -> None:
-        """Start the main loop for GLib in a new thread."""
-        main = GLib.MainLoop()
-        Thread(target=main.run).start()
