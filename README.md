@@ -23,12 +23,12 @@ After cloning the repository with: `git clone https://github.com/Zedeldi/lyri.gi
 ### Build
 
 1. Install project: `pip install .`
-2. Run: `lyri`
+2. Run: `lyri` or `sanic lyri.server -H <host> -p <port>`
 
 ### Development
 
 1. Install dependencies: `pip install -r requirements.txt`
-2. Run: `python -m lyri`
+2. Run: `python -m lyri` or `sanic lyri.server --dev -H <host> -p <port>`
 
 #### Libraries:
 
