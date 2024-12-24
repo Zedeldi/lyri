@@ -3,17 +3,53 @@
 
 :root {
   --color-primary: #0d6efd;
+  --color-light: #f8f9fa;
+  --color-dark: #adb5bd;
+  --color-inactive: #6c757d7f;
 }
 
 body {
   background-color: #000;
-  color: #fff;
+  color: var(--color-light);
+  accent-color: var(--color-primary);
   font-family: "Noto Sans", serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
   font-variation-settings: "wdth" 100;
   margin: 0;
+}
+
+progress {
+  background-color: var(--color-inactive);
+  border-radius: 16px;
+  border: none;
+  height: 4px;
+}
+
+progress::-webkit-progress-bar {
+  background-color: var(--color-inactive);
+  border-radius: 16px;
+}
+
+progress::-webkit-progress-value {
+  background-color: var(--color-light);
+  border-radius: 16px;
+}
+
+progress::-moz-progress-bar {
+  background-color: var(--color-light);
+  border-radius: 16px;
+}
+
+@media only screen and not (max-width: 1024px) {
+  progress:hover::-moz-progress-bar {
+    background-color: var(--color-primary);
+  }
+
+  progress:hover::-webkit-progress-value {
+    background-color: var(--color-primary);
+  }
 }
 
 .bg-image {
@@ -81,7 +117,7 @@ body {
 }
 
 .track-text h3 {
-  color: #aaa;
+  color: var(--color-dark);
   margin: 5px 0;
 }
 
@@ -145,20 +181,34 @@ body {
   border: none;
   outline: none;
   padding: 0;
-  background-color: #fff;
+  background-color: var(--color-light);
   color: #000;
   justify-content: center;
   align-items: center;
   text-align: center;
   cursor: pointer;
 }
+
+@media only screen and not (max-width: 1024px) {
+  .media-controls-btn:hover {
+    transition: transform 0.1s ease-in-out;
+    transform: scale(1.05);
+  }
+}
+
 .media-controls-btn-icon {
   height: 60px;
   width: 60px;
   font-size: 2em;
   border-radius: 0;
   background-color: transparent;
-  color: #fff;
+  color: var(--color-dark);
+}
+
+@media only screen and not (max-width: 1024px) {
+  .media-controls-btn-icon:hover {
+    color: var(--color-light);
+  }
 }
 
 .media-controls-btn-icon[data-enabled] {
