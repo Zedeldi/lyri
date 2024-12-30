@@ -118,7 +118,7 @@ progress::-moz-progress-bar {
 
 .track-text h3 {
   color: var(--color-dark);
-  margin: 5px 0;
+  margin: 4px 0;
 }
 
 .album-art {
@@ -133,11 +133,16 @@ progress::-moz-progress-bar {
   padding: 16px;
 }
 
+.track-info,
+.media-controls,
+.lyrics-panel {
+  transition: all 0.25s ease-in;
+}
+
 .media-controls-container:hover .media-controls.hidden {
   background-color: rgba(0, 0, 0, 0.5);
   visibility: visible;
   opacity: 1;
-  transition: all 0.25s ease-in;
 }
 
 .media-controls {
@@ -187,16 +192,17 @@ progress::-moz-progress-bar {
   align-items: center;
   text-align: center;
   cursor: pointer;
+  transition: transform 0.1s ease-in-out;
 }
 
 @media only screen and not (max-width: 1024px) {
   .media-controls-btn:hover {
-    transition: transform 0.1s ease-in-out;
     transform: scale(1.05);
   }
 }
 
 .media-controls-btn-icon {
+  position: relative;
   height: 60px;
   width: 60px;
   font-size: 2em;
@@ -213,6 +219,13 @@ progress::-moz-progress-bar {
 
 .media-controls-btn-icon[data-enabled] {
   color: var(--color-primary);
+}
+
+.media-controls-btn-icon[data-enabled]::after {
+  content: "•";
+  font-size: 0.5em;
+  position: absolute;
+  bottom: 0;
 }
 
 /* Utilities */
