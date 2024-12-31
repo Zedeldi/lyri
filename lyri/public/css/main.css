@@ -93,6 +93,7 @@ progress::-moz-progress-bar {
 
 .track-text {
   margin-top: auto;
+  width: 80%;
 }
 
 /* iOS and Safari < 14.1 */
@@ -106,6 +107,7 @@ progress::-moz-progress-bar {
 .track-text h3 {
   display: -webkit-box;
   overflow: hidden;
+  overflow-wrap: break-word;
   line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;

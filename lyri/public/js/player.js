@@ -58,10 +58,17 @@ const Utils = (function () {
 
 const Lyri = (function () {
   const serverUrl = window.location.host;
+  const serverProto = window.location.protocol;
+
+  function parseUrl(url, name) {
+    return url.startsWith("file://")
+      ? `${serverProto}//${serverUrl}/proxy/${name}`
+      : url;
+  }
 
   async function getLyrics() {
     const data =
-      (await fetch(`http://${serverUrl}/get/lyrics`).then((response) =>
+      (await fetch(`${serverProto}//${serverUrl}/get/lyrics`).then((response) =>
         response.json(),
       )) || "No lyrics available for this song.";
     return data.charAt(0) == "["
@@ -78,35 +85,45 @@ const Lyri = (function () {
   }
 
   async function togglePlayback() {
-    await fetch(`http://${serverUrl}/toggle`);
+    await fetch(`${serverProto}//${serverUrl}/toggle`);
   }
 
   async function previous() {
-    await fetch(`http://${serverUrl}/previous`);
+    await fetch(`${serverProto}//${serverUrl}/previous`);
   }
 
   async function next() {
-    await fetch(`http://${serverUrl}/next`);
+    await fetch(`${serverProto}//${serverUrl}/next`);
   }
 
   async function setLoopStatus(status) {
-    await fetch(`http://${serverUrl}/set/loop-status?status=${status}`);
+    await fetch(
+      `${serverProto}//${serverUrl}/set/loop-status?status=${status}`,
+    );
   }
 
   async function setShuffle(status) {
-    await fetch(`http://${serverUrl}/set/shuffle?status=${status}`);
+    await fetch(`${serverProto}//${serverUrl}/set/shuffle?status=${status}`);
   }
 
   async function setPosition(position) {
-    await fetch(`http://${serverUrl}/set/position?position=${position}`);
+    await fetch(
+      `${serverProto}//${serverUrl}/set/position?position=${position}`,
+    );
   }
 
   async function setVolume(level) {
-    await fetch(`http://${serverUrl}/set/volume?level=${level}`);
+    await fetch(`${serverProto}//${serverUrl}/set/volume?level=${level}`);
   }
 
   function startWebsocket(callback) {
-    const socket = new WebSocket(`ws://${serverUrl}/player`);
+    let wsProto;
+    if (serverProto === "https:") {
+      wsProto = "wss:";
+    } else {
+      wsProto = "ws:";
+    }
+    const socket = new WebSocket(`${wsProto}//${serverUrl}/player`);
 
     socket.addEventListener("open", (event) => {
       console.info("[open] Connection established");
@@ -149,6 +166,7 @@ const Lyri = (function () {
     setPosition: setPosition,
     setVolume: setVolume,
     getLyrics: getLyrics,
+    parseUrl: parseUrl,
     startWebsocket: startWebsocket,
   };
 })();
@@ -158,7 +176,7 @@ const PlayerUI = (function () {
   let lyrics = [];
 
   function updateArtwork(url) {
-    url = url || player.artwork;
+    url = Lyri.parseUrl(url || player.artwork, "artwork");
     document.getElementById("album-art").src = url;
     document.getElementById("bg-image").style.backgroundImage = `url(${url})`;
   }
@@ -226,6 +244,9 @@ const PlayerUI = (function () {
 
   function updateLyrics() {
     const lines = window.innerHeight < 768 ? 2 : 4;
+    if (lyrics.length == 0) {
+      return;
+    }
     const data =
       lyrics[0].length == 2
         ? lyrics
@@ -245,9 +266,9 @@ const PlayerUI = (function () {
     document.getElementById("title").textContent = data.title;
     document.getElementById("album").textContent = data.album;
     document.getElementById("artist").textContent = data.artist;
-    document.getElementById("track-url").href = data.url;
+    document.getElementById("track-url").href = Lyri.parseUrl(data.url, "stream");
     updateArtwork(data.artwork);
-    document.title = `${data.title} | ${data.artist}`;
+    document.title = data.artist ? `${data.title} | ${data.artist}` : data.title;
     console.log(
       `[now playing] ${data.title} - ${data.album} by ${data.artist}`,
     );
@@ -311,7 +332,8 @@ document
   .getElementById("loop-status-btn")
   .addEventListener("click", (event) => {
     loopStatus = document.getElementById("loop-status-btn");
-    const status = (loopStatus.getAttribute("data-value") + 1) % 3;
+    // (x + 2) % 3 is the expected behaviour of (x - 1) % 3, handling negatives
+    const status = (loopStatus.getAttribute("data-value") + 2) % 3;
     loopStatus.setAttribute("data-value", status);
     PlayerUI.updateLoopStatusEnabled();
     Lyri.setLoopStatus(status);
