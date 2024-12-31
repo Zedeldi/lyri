@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "lyri"
 description = "HTTP music dashboard to control playback via playerctl and display lyrics."
-version = "1.0.0"
+version = "1.1.0"
 readme = "README.md"
 license = {file = "LICENSE"}
 authors = [
@@ -16,6 +16,7 @@ maintainers = [
 ]
 dependencies = [
   "PyGObject",
+  "requests",
   "sanic",
   "syncedlyrics"
 ]
