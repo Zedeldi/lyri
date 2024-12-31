@@ -8,7 +8,7 @@ from pathlib import Path
 
 import requests
 import uvloop
-from sanic import Request, Sanic, Websocket, empty, json, file, text
+from sanic import Request, Sanic, Websocket, empty, file, json, text
 from sanic.response import HTTPResponse, JSONResponse, file_stream
 
 from lyri.config import LyriConfig
@@ -198,10 +198,12 @@ async def proxy_artwork(request: Request) -> HTTPResponse:
     """Return album art content for currently playing song."""
     if (url := app.ctx.player.get_artwork()).startswith("file://"):
         return await file(Path.from_uri(url))
-    with requests.get(app.ctx.player.get_artwork()) as request:
-        with tempfile.NamedTemporaryFile() as fd:
-            fd.write(request.content)
-            return await file(fd.name)
+    with (
+        requests.get(app.ctx.player.get_artwork()) as request,
+        tempfile.NamedTemporaryFile() as fd,
+    ):
+        fd.write(request.content)
+        return await file(fd.name)
 
 
 @app.route("/proxy/stream", methods=["GET"])
