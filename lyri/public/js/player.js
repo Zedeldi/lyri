@@ -190,7 +190,7 @@ const PlayerUI = (function () {
     positionBar.value = position;
     positionBar.max = length;
     positionLabel.textContent = Utils.formatDuration(position);
-    if (lengthLabel.hasAttribute("data-remaining")) {
+    if (window.localStorage.getItem("time-remaining")) {
       lengthLabel.textContent = Utils.formatRemaining(position, length);
     } else {
       lengthLabel.textContent = Utils.formatDuration(length);
@@ -266,9 +266,14 @@ const PlayerUI = (function () {
     document.getElementById("title").textContent = data.title;
     document.getElementById("album").textContent = data.album;
     document.getElementById("artist").textContent = data.artist;
-    document.getElementById("track-url").href = Lyri.parseUrl(data.url, "stream");
+    document.getElementById("track-url").href = Lyri.parseUrl(
+      data.url,
+      "stream",
+    );
     updateArtwork(data.artwork);
-    document.title = data.artist ? `${data.title} | ${data.artist}` : data.title;
+    document.title = data.artist
+      ? `${data.title} | ${data.artist}`
+      : data.title;
     console.log(
       `[now playing] ${data.title} - ${data.album} by ${data.artist}`,
     );
@@ -358,7 +363,11 @@ document.getElementById("fullscreen-btn").addEventListener("click", (event) => {
 });
 
 document.getElementById("length-label").addEventListener("click", (event) => {
-  document.getElementById("length-label").toggleAttribute("data-remaining");
+  if (window.localStorage.getItem("time-remaining")) {
+    window.localStorage.removeItem("time-remaining");
+  } else {
+    window.localStorage.setItem("time-remaining", true);
+  }
   PlayerUI.updateDuration();
 });
 
