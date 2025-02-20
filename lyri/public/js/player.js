@@ -61,8 +61,9 @@ const Lyri = (function () {
   const serverProto = window.location.protocol;
 
   function parseUrl(url, name) {
+    // Proxy file-protocol URLs and prevent caching with timestamp
     return url.startsWith("file://")
-      ? `${serverProto}//${serverUrl}/proxy/${name}`
+      ? `${serverProto}//${serverUrl}/proxy/${name}?t=${Date.now()}`
       : url;
   }
 

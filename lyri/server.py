@@ -196,14 +196,15 @@ async def set_volume(request: Request) -> HTTPResponse:
 @app.route("/proxy/artwork", methods=["GET"])
 async def proxy_artwork(request: Request) -> HTTPResponse:
     """Return album art content for currently playing song."""
+    headers = {"cache-control": "no-store"}
     if (url := app.ctx.player.get_artwork()).startswith("file://"):
-        return await file(Path.from_uri(url))
+        return await file(Path.from_uri(url), headers=headers)
     with (
         requests.get(app.ctx.player.get_artwork()) as request,
         tempfile.NamedTemporaryFile() as fd,
     ):
         fd.write(request.content)
-        return await file(fd.name)
+        return await file(fd.name, headers=headers)
 
 
 @app.route("/proxy/stream", methods=["GET"])
