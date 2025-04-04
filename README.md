@@ -1,6 +1,6 @@
 # Lyri
 
-[![GitHub license](https://img.shields.io/github/license/Zedeldi/lyri?style=flat-square)](https://github.com/Zedeldi/lyri/blob/master/LICENSE) [![GitHub last commit](https://img.shields.io/github/last-commit/Zedeldi/lyri?style=flat-square)](https://github.com/Zedeldi/lyri/commits) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
+[![GitHub license](https://img.shields.io/github/license/Zedeldi/lyri?style=flat-square)](https://github.com/Zedeldi/lyri/blob/master/LICENSE) [![GitHub last commit](https://img.shields.io/github/last-commit/Zedeldi/lyri?style=flat-square)](https://github.com/Zedeldi/lyri/commits) [![PyPI version](https://img.shields.io/pypi/v/lyri?style=flat-square)](https://pypi.org/project/lyri/) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
 
 HTTP music dashboard to control playback via playerctl and display lyrics.
 
@@ -16,30 +16,46 @@ Player information is pushed to the client over a [WebSocket](https://en.wikiped
 
 No external JavaScript libraries are requried.
 
+### Example
+
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/Zedeldi/lyri/main/docs/lyri-demo.png"
+    alt="Demonstration of lyri"
+  />
+</p>
+
 ## Installation
 
-After cloning the repository with: `git clone https://github.com/Zedeldi/lyri.git`
+### PyPI
 
-### Build
+1. Install project: `pip install lyri`
+2. Run: `lyri`
+
+### Source
+
+Alternatively, after cloning the repository with: `git clone https://github.com/Zedeldi/lyri.git`
+
+#### Build
 
 1. Install project: `pip install .`
 2. Run: `lyri` or `sanic lyri.server -H <host> -p <port>`
 
-### Development
+#### Development
 
 1. Install dependencies: `pip install -r requirements.txt`
 2. Run: `python -m lyri` or `sanic lyri.server --dev -H <host> -p <port>`
 
-#### Libraries:
+## Libraries
 
--   [PyGObject](https://pypi.org/project/PyGObject/) - GObject bindings
--   [Sanic](https://pypi.org/project/sanic/) - web framework and server
--   [syncedlyrics](https://pypi.org/project/syncedlyrics/) - lyrics fetcher
+- [PyGObject](https://pypi.org/project/PyGObject/) - GObject bindings
+- [Sanic](https://pypi.org/project/sanic/) - web framework and server
+- [syncedlyrics](https://pypi.org/project/syncedlyrics/) - lyrics fetcher
 
 ## Credits
 
--   [Bootstrap Icons](https://icons.getbootstrap.com/) - icons
--   [Google Fonts](https://fonts.google.com/) - fonts
+- [Bootstrap Icons](https://icons.getbootstrap.com/) - icons
+- [Google Fonts](https://fonts.google.com/) - fonts
 
 ## License
 
